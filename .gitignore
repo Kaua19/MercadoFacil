@@ -1,3 +1,11 @@
+cat > .gitignore << 'EOF'
+target/
+.idea/
+*.iml
+.mvn/
+application.properties
+EOF
+
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
