@@ -5,6 +5,7 @@ import com.kaua8.mercadoFacil.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/products")
@@ -36,14 +37,23 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute Product product){
+    public String save(@ModelAttribute Product product, RedirectAttributes redirectAttributes){
         productService.save(product);
+        redirectAttributes.addFlashAttribute("sucess", "Product saved sucessefully");
         return "redirect:/products";
     }
+
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
-        productService.delete(id);
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            productService.delete(id);
+            redirectAttributes.addFlashAttribute("sucess",
+                    "Product deleted sucessefully");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
         return "redirect:/products";
     }
+
 
 }

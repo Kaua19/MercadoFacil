@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface SaleRepository extends JpaRepository<Sale, Long> {
 
-    List<Sale> findByCreatedAtBteween(LocalDateTime start, LocalDateTime end);
+    List<Sale> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 
 }
 

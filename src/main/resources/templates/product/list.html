@@ -8,7 +8,8 @@
 </head>
 <body>
 <div class="container mt-4">
-
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Products</h2>
         <a href="/products/new" class="btn btn-primary">+ New Product</a>

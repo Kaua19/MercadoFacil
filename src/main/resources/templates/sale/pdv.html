@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PDV</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+
+    <h2>🛒 PDV — Ponto de Venda</h2>
+
+    <!-- Mensagem de sucesso -->
+    <div th:if="${param.success}" class="alert alert-success">
+        Venda finalizada com sucesso!
+    </div>
+
+    <div class="row mt-3">
+
+        <!-- Lista de Produtos -->
+        <div class="col-md-6">
+            <h5>Produtos</h5>
+            <table class="table table-hover table-bordered">
+                <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Add</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${'R$ ' + product.price}"></td>
+                    <td th:text="${product.stockQuantity}"></td>
+                    <td>
+                        <form th:action="@{/pdv/add}" method="post">
+                            <input type="hidden" name="productId"
+                                   th:value="${product.id}">
+                            <div class="input-group input-group-sm">
+                                <input type="number" name="quantity"
+                                       value="1" min="1" class="form-control"
+                                       style="width: 60px">
+                                <button class="btn btn-success btn-sm"
+                                        type="submit">+</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Carrinho -->
+        <div class="col-md-6">
+            <h5>Carrinho</h5>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="entry : ${cartItems}">
+                    <td th:text="${entry.value[0].name}"></td>
+                    <td th:text="${entry.value[1]}"></td>
+                    <td th:text="${'R$ ' + entry.value[0].price}"></td>
+                    <td th:text="${'R$ ' + entry.value[0].price * entry.value[1]}"></td>
+                    <td>
+                        <a th:href="@{/pdv/remove/{id}(id=${entry.key})}"
+                           class="btn btn-danger btn-sm">X</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Finalizar Venda -->
+            <form th:action="@{/pdv/finish}" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Payment Method</label>
+                    <select name="paymentMethod" class="form-select">
+                        <option value="CASH">💵 Cash</option>
+                        <option value="CARD">💳 Card</option>
+                        <option value="PIX">📱 PIX</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success w-100">
+                    ✅ Finalizar Venda
+                </button>
+            </form>
+
+            <a href="/pdv/clear" class="btn btn-outline-danger w-100 mt-2">
+                🗑️ Limpar Carrinho
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

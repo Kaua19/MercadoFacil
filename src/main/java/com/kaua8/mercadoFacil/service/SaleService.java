@@ -46,7 +46,7 @@ public class SaleService {
             item.setProduct(product);
             item.setQuantity(quantity);
             item.setUnitPrice(product.getPrice());
-            item.setSubTotal(subTotal);
+            item.setSubtotal(subTotal);
 
             items.add(item);
             total.add(subTotal);
@@ -66,7 +66,7 @@ public class SaleService {
         LocalDateTime start = LocalDateTime.now().withHour(0).withMinute(0);
         LocalDateTime end = LocalDateTime.now().withHour(23).withMinute(59);
 
-        return saleRepository.findByCreatedAtBteween(start, end);
+        return saleRepository.findByCreatedAtBetween(start, end);
     }
 
     public List<Sale> findAll() {

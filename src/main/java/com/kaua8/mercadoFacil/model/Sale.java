@@ -1,12 +1,14 @@
 package com.kaua8.mercadoFacil.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import java.math.BigDecimal;
-import java.util.List;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "sale")
 public class Sale {
@@ -24,15 +26,11 @@ public class Sale {
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
 
-    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SaleItem> items;
 
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
-
-
-
-
 }
